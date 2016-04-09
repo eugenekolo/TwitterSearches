@@ -207,6 +207,12 @@ public class MainActivity extends AppCompatActivity {
                         case 2: // delete
                            deleteSearch(tag);
                            break;
+                        case 3: //share on Facebook
+                           shareSearchFB(tag);
+                           break;
+                        case 4: //share in Spanish
+                           translateSearch(tag);
+                           break;
                      }
                   }
                }
@@ -238,6 +244,51 @@ public class MainActivity extends AppCompatActivity {
       // display apps that can share plain text
       startActivity(Intent.createChooser(shareIntent,
          getString(R.string.share_search)));
+   }
+   // allow user to choose directly share URL of a saved search on Facebook
+   private void shareSearchFB(String tag) {
+      // create the URL representing the search
+      String urlString = getString(R.string.fb_search_URL) +
+              Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+
+      // create Intent to share urlString
+      Intent shareIntent = new Intent();
+      shareIntent.setAction(Intent.ACTION_SEND);
+      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+              getString(R.string.share_subject));
+      shareIntent.putExtra(Intent.EXTRA_TEXT,
+              getString(R.string.share_message, urlString));
+      shareIntent.setType("text/plain");
+
+
+      // create an Intent to launch a web browser
+      Intent webIntent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse(urlString));
+
+      startActivity(webIntent); // show results in web browser
+   }
+
+   // allow user to view translation of tweets
+   private void translateSearch(String tag) {
+      // create the URL representing the search
+      String urlString = getString(R.string.translate_search_URL) +
+              Uri.encode(savedSearches.getString(tag, ""), "UTF-8") +  "&lang=es";
+
+      // create Intent to share urlString
+      Intent shareIntent = new Intent();
+      shareIntent.setAction(Intent.ACTION_SEND);
+      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+              getString(R.string.share_subject));
+      shareIntent.putExtra(Intent.EXTRA_TEXT,
+              getString(R.string.share_message, urlString));
+      shareIntent.setType("text/plain");
+
+
+      // create an Intent to launch a web browser
+      Intent webIntent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse(urlString));
+
+      startActivity(webIntent); // show results in web browser
    }
 
    // deletes a search after the user confirms the delete operation
