@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
    private List<String> tags; // list of tags for saved searches
    private SearchesAdapter adapter; // for binding data to RecyclerView
 
+   public void gotoTrends(View view) {
+      startActivity(new Intent(getApplicationContext(), TrendActivity.class));
+   }
+
    // configures the GUI and registers event listeners
    @Override
    protected void onCreate(Bundle savedInstanceState) {

@@ -10,45 +10,15 @@
    android:paddingTop="@dimen/activity_vertical_margin"
    android:paddingBottom="@dimen/activity_vertical_margin"
    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-   tools:showIn="@layout/activity_main"
-   tools:context=".MainActivity">
-
-   <android.support.design.widget.TextInputLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/queryTextInputLayout">
-
-      <EditText
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:imeOptions="actionNext"
-         android:hint="@string/query_prompt"
-         android:singleLine="true"/>
-
-   </android.support.design.widget.TextInputLayout>
-
-   <android.support.design.widget.TextInputLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/queryTextInputLayout"
-      android:id="@+id/tagTextInputLayout">
-
-      <EditText
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:imeOptions="actionDone"
-         android:hint="@string/tag_prompt"
-         android:singleLine="true"/>
-
-   </android.support.design.widget.TextInputLayout>
+   tools:showIn="@layout/activity_trend"
+   tools:context=".TrendActivity">
 
    <LinearLayout
       android:orientation="vertical"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@color/colorTaggedSearches"
-      android:layout_below="@+id/btnFeature1"
-      android:id="@+id/linearLayout">
+      android:layout_marginTop="@dimen/activity_vertical_margin">
 
       <TextView
          android:layout_width="match_parent"
@@ -70,15 +40,4 @@
          android:paddingLeft="@dimen/activity_horizontal_margin"/>
 
    </LinearLayout>
-
-   <Button
-       style="?android:attr/buttonStyleSmall"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="Trending"
-       android:id="@+id/btnFeature1"
-       android:layout_below="@+id/tagTextInputLayout"
-       android:layout_alignParentStart="true"
-       android:onClick="gotoTrends"/>
-
 </RelativeLayout>
