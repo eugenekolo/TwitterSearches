@@ -40,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
    private List<String> tags; // list of tags for saved searches
    private SearchesAdapter adapter; // for binding data to RecyclerView
 
+   public static OAuthAppAuthTask requestToken;
+
+   final static String TWITTER_API = "https://api.twitter.com";
+   final static String TWITTER_AUTH = TWITTER_API + "/oauth2/token";
+   final static String TWITTER_WORLDWIDE_TRENDING = TWITTER_API + "1.1/trends/place.json?id=1";
+   final static String APP_KEY = "d6ePwCWAoJEHQgYkj4LfvsaUn";
+   final static String APP_SECRET = "zNr00TsK2V0MLmQkVLBle7UmGH27K2EkIV0YFGg6tkWtKb8lL6";
+   static String APP_TOKEN = null;
+
    public void gotoTrends(View view) {
       startActivity(new Intent(getApplicationContext(), TrendActivity.class));
    }
@@ -53,11 +62,9 @@ public class MainActivity extends AppCompatActivity {
       setSupportActionBar(toolbar);
 
       // get references to the EditTexts and add TextWatchers to them
-      queryEditText = ((TextInputLayout) findViewById(
-         R.id.queryTextInputLayout)).getEditText();
+      queryEditText = ((TextInputLayout) findViewById(R.id.queryTextInputLayout)).getEditText();
       queryEditText.addTextChangedListener(textWatcher);
-      tagEditText = ((TextInputLayout) findViewById(
-         R.id.tagTextInputLayout)).getEditText();
+      tagEditText = ((TextInputLayout) findViewById(R.id.tagTextInputLayout)).getEditText();
       tagEditText.addTextChangedListener(textWatcher);
 
       // get the SharedPreferences containing the user's saved searches
@@ -68,25 +75,29 @@ public class MainActivity extends AppCompatActivity {
       Collections.sort(tags, String.CASE_INSENSITIVE_ORDER);
 
       // get reference to the RecyclerView to configure it
-      RecyclerView recyclerView =
-         (RecyclerView) findViewById(R.id.recyclerView);
+      RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
       // use a LinearLayoutManager to display items in a vertical list
       recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
       // create RecyclerView.Adapter to bind tags to the RecyclerView
-      adapter = new SearchesAdapter(
-         tags, itemClickListener, itemLongClickListener);
+      adapter = new SearchesAdapter(tags, itemClickListener, itemLongClickListener);
       recyclerView.setAdapter(adapter);
 
       // specify a custom ItemDecorator to draw lines between list items
       recyclerView.addItemDecoration(new ItemDivider(this));
 
       // register listener to save a new or edited search
-      saveFloatingActionButton =
-         (FloatingActionButton) findViewById(R.id.fab);
+      saveFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
       saveFloatingActionButton.setOnClickListener(saveButtonListener);
       updateSaveFAB(); // hides button because EditTexts initially empty
+
+      requestToken = new OAuthAppAuthTask(new OAuthAppAuthTask.ApiResponse() {
+         public void onResponse(String token) {
+            APP_TOKEN = token;
+         }
+      });
+      requestToken.execute("https://api.twitter.com/oauth2/token", APP_KEY, APP_SECRET);
    }
 
    // hide/show saveFloatingActionButton based on EditTexts' contents
