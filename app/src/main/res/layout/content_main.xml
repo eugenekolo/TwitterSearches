@@ -55,7 +55,17 @@
        android:layout_height="wrap_content"
        android:id="@+id/filterSpinner" />
 
-   <LinearLayout
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trending"
+        android:id="@+id/btnFeature1"
+        android:layout_below="@+id/tagTextInputLayout"
+        android:layout_alignParentStart="true"
+        android:onClick="gotoTrends"/>
+
+    <LinearLayout
       android:orientation="vertical"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -83,19 +93,7 @@
          android:paddingLeft="@dimen/activity_horizontal_margin"/>
 
    </LinearLayout>
-<<<<<<< Updated upstream
 
-   <Button
-       style="?android:attr/buttonStyleSmall"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="Trending"
-       android:id="@+id/btnFeature1"
-       android:layout_below="@+id/tagTextInputLayout"
-       android:layout_alignParentStart="true"
-       android:onClick="gotoTrends"/>
 
-</RelativeLayout>
-=======
 </LinearLayout>
->>>>>>> Stashed changes
+
