@@ -22,8 +22,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
       startActivity(new Intent(getApplicationContext(), TrendActivity.class));
    }
 
+   private Spinner filterSpinner;
+   private String filterChoice; // string for filter choice
+   private String filter; // string for filter
+
    // configures the GUI and registers event listeners
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,56 @@ public class MainActivity extends AppCompatActivity {
       queryEditText.addTextChangedListener(textWatcher);
       tagEditText = ((TextInputLayout) findViewById(R.id.tagTextInputLayout)).getEditText();
       tagEditText.addTextChangedListener(textWatcher);
+
+
+      filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
+
+      List<String> filters = new ArrayList<String>();
+      filters.add("None");
+      filters.add("Images");
+      filters.add("Videos");
+      filters.add("Media (Images and Videos)");
+      filters.add("Links");
+
+      // Creating adapter for spinner
+      ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filters);
+
+      // attaching data adapter to spinner
+      filterSpinner.setAdapter(dataAdapter);
+
+      // Spinner click listener
+      filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // On selecting a spinner item
+            filterChoice = parent.getItemAtPosition(position).toString();
+            switch (filterChoice) {
+               case "None":
+                  filter = "";
+                  break;
+               case "Images":
+                  filter = "images";
+                  break;
+               case "Videos":
+                  filter = "videos";
+                  break;
+               case "Media (Images and Videos)":
+                  filter = "media";
+                  break;
+               case "Links":
+                  filter = "links";
+                  break;
+               default:
+                  filter = "";
+                  break;
+            }
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {
+
+         }
+      });
 
       // get the SharedPreferences containing the user's saved searches
       savedSearches = getSharedPreferences(SEARCHES, MODE_PRIVATE);
@@ -139,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
             if (!query.isEmpty() && !tag.isEmpty()) {
                // hide the virtual keyboard
                ((InputMethodManager) getSystemService(
-                  Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                     view.getWindowToken(), 0);
+                       Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
+                       view.getWindowToken(), 0);
 
                addTaggedSearch(tag, query); // add/update the search
                queryEditText.setText(""); // clear queryEditText
@@ -172,8 +229,16 @@ public class MainActivity extends AppCompatActivity {
          public void onClick(View view) {
             // get query string and create a URL representing the search
             String tag = ((TextView) view).getText().toString();
-            String urlString = getString(R.string.search_URL) +
-               Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+            String urlString;
+
+            if (!filter.isEmpty()) {
+               urlString = getString(R.string.search_URL) +
+                       Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
+            }
+            else {
+               urlString = getString(R.string.search_URL) +
+                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+            }
 
             // create an Intent to launch a web browser
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -218,6 +283,12 @@ public class MainActivity extends AppCompatActivity {
                         case 2: // delete
                            deleteSearch(tag);
                            break;
+                        case 3: //share on Facebook
+                           shareSearchFB(tag);
+                           break;
+                        case 4: //share in Spanish
+                           translateSearch(tag);
+                           break;
                      }
                   }
                }
@@ -249,6 +320,51 @@ public class MainActivity extends AppCompatActivity {
       // display apps that can share plain text
       startActivity(Intent.createChooser(shareIntent,
          getString(R.string.share_search)));
+   }
+   // allow user to choose directly share URL of a saved search on Facebook
+   private void shareSearchFB(String tag) {
+      // create the URL representing the search
+      String urlString = getString(R.string.fb_search_URL) +
+              Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+
+      // create Intent to share urlString
+      Intent shareIntent = new Intent();
+      shareIntent.setAction(Intent.ACTION_SEND);
+      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+              getString(R.string.share_subject));
+      shareIntent.putExtra(Intent.EXTRA_TEXT,
+              getString(R.string.share_message, urlString));
+      shareIntent.setType("text/plain");
+
+
+      // create an Intent to launch a web browser
+      Intent webIntent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse(urlString));
+
+      startActivity(webIntent); // show results in web browser
+   }
+
+   // allow user to view translation of tweets
+   private void translateSearch(String tag) {
+      // create the URL representing the search
+      String urlString = getString(R.string.translate_search_URL) +
+              Uri.encode(savedSearches.getString(tag, ""), "UTF-8") +  "&lang=es";
+
+      // create Intent to share urlString
+      Intent shareIntent = new Intent();
+      shareIntent.setAction(Intent.ACTION_SEND);
+      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+              getString(R.string.share_subject));
+      shareIntent.putExtra(Intent.EXTRA_TEXT,
+              getString(R.string.share_message, urlString));
+      shareIntent.setType("text/plain");
+
+
+      // create an Intent to launch a web browser
+      Intent webIntent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse(urlString));
+
+      startActivity(webIntent); // show results in web browser
    }
 
    // deletes a search after the user confirms the delete operation
