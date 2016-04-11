@@ -18,12 +18,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,13 +37,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
    // name of SharedPreferences XML file that stores the saved searches
    private static final String SEARCHES = "searches";
-
    private EditText queryEditText; // where user enters a query
    private EditText tagEditText; // where user enters a query's tag
    private FloatingActionButton saveFloatingActionButton; // save search
    private SharedPreferences savedSearches; // user's favorite searches
    private List<String> tags; // list of tags for saved searches
    private SearchesAdapter adapter; // for binding data to RecyclerView
+   private Spinner spinner_language;
+   private String language_chosen;
 
    public void gotoTrends(View view) {
       startActivity(new Intent(getApplicationContext(), TrendActivity.class));
@@ -87,6 +93,56 @@ public class MainActivity extends AppCompatActivity {
          (FloatingActionButton) findViewById(R.id.fab);
       saveFloatingActionButton.setOnClickListener(saveButtonListener);
       updateSaveFAB(); // hides button because EditTexts initially empty
+
+      //create spinner for languages
+      language_chosen = "en-us"; //default language is English
+      spinner_language = (Spinner) findViewById(R.id.spinner_language); // Spinner element /
+      final List<String> languages = new ArrayList<String>();  // Spinner Drop down elements
+      languages.add("English");
+      languages.add("Spanish");
+      languages.add("Arabic");
+      languages.add("French");
+      languages.add("Italian");
+      languages.add("Japanese");
+      languages.add("Russian");
+
+      // Creating adapter for spinner
+      ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
+      // Drop down layout style - list view with radio button
+      dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      // attaching data adapter to spinner
+      spinner_language.setAdapter(dataAdapter);
+
+      spinner_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> parent, View view,
+                                    int position, long id) {
+            String item = parent.getItemAtPosition(position).toString();
+            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            if (item.equals("English")) { //language chosen
+               language_chosen = "EN"; //English
+            } else if (item.equals("Spanish")) {
+               language_chosen = "ES"; //Spanish
+            } else if (item.equals("Arabic")) {
+               language_chosen = "AR"; //Arabic
+            } else if (item.equals("Italian")) {
+               language_chosen = "IT"; //Italian
+            } else if (item.equals("French")) {
+               language_chosen = "FR"; //French
+            } else if (item.equals("Japanese")) {
+               language_chosen = "JA";  //Japanese
+            } else if (item.equals("Russian")) { //Russian
+               language_chosen = "RU";
+            } else {//default is English
+               language_chosen = "EN";
+            }
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {
+            // TODO Auto-generated method stub
+         }
+      });
    }
 
    // hide/show saveFloatingActionButton based on EditTexts' contents
@@ -159,10 +215,17 @@ public class MainActivity extends AppCompatActivity {
       new OnClickListener() {
          @Override
          public void onClick(View view) {
-            // get query string and create a URL representing the search
             String tag = ((TextView) view).getText().toString();
-            String urlString = getString(R.string.search_URL) +
-               Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+            String urlString;
+            if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
+               urlString = getString(R.string.translate_search_URL_prefix) +
+                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + getString(R.string.translate_search_URL_suffix) + language_chosen;
+            }
+            else { //if language chosen is English, use regular search URL
+               urlString = getString(R.string.search_URL) +
+                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+            }
+            // get query string and create a URL representing the search
 
             // create an Intent to launch a web browser
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -209,9 +272,6 @@ public class MainActivity extends AppCompatActivity {
                            break;
                         case 3: //share on Facebook
                            shareSearchFB(tag);
-                           break;
-                        case 4: //share in Spanish
-                           translateSearch(tag);
                            break;
                      }
                   }
@@ -268,28 +328,7 @@ public class MainActivity extends AppCompatActivity {
       startActivity(webIntent); // show results in web browser
    }
 
-   // allow user to view translation of tweets
-   private void translateSearch(String tag) {
-      // create the URL representing the search
-      String urlString = getString(R.string.translate_search_URL) +
-              Uri.encode(savedSearches.getString(tag, ""), "UTF-8") +  "&lang=es";
 
-      // create Intent to share urlString
-      Intent shareIntent = new Intent();
-      shareIntent.setAction(Intent.ACTION_SEND);
-      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
-              getString(R.string.share_subject));
-      shareIntent.putExtra(Intent.EXTRA_TEXT,
-              getString(R.string.share_message, urlString));
-      shareIntent.setType("text/plain");
-
-
-      // create an Intent to launch a web browser
-      Intent webIntent = new Intent(Intent.ACTION_VIEW,
-              Uri.parse(urlString));
-
-      startActivity(webIntent); // show results in web browser
-   }
 
    // deletes a search after the user confirms the delete operation
    private void deleteSearch(final String tag) {
@@ -320,6 +359,8 @@ public class MainActivity extends AppCompatActivity {
 
       confirmBuilder.create().show(); // display AlertDialog
    }
+
+
 }
 
 /**************************************************************************
