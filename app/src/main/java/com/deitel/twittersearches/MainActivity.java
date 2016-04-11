@@ -24,18 +24,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-<<<<<<< HEAD
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-=======
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.ArrayAdapter;
->>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -159,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
       saveFloatingActionButton.setOnClickListener(saveButtonListener);
       updateSaveFAB(); // hides button because EditTexts initially empty
 
-<<<<<<< HEAD
       //create spinner for languages
       language_chosen = "en-us"; //default language is English
       spinner_language = (Spinner) findViewById(R.id.spinner_language); // Spinner element /
@@ -173,11 +165,11 @@ public class MainActivity extends AppCompatActivity {
       languages.add("Russian");
 
       // Creating adapter for spinner
-      ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
+      ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
       // Drop down layout style - list view with radio button
-      dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       // attaching data adapter to spinner
-      spinner_language.setAdapter(dataAdapter);
+      spinner_language.setAdapter(dataAdapter2);
 
       spinner_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
          @Override
@@ -209,14 +201,13 @@ public class MainActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
          }
       });
-=======
+
       requestToken = new OAuthAppAuthTask(new OAuthAppAuthTask.ApiResponse() {
          public void onResponse(String token) {
             APP_TOKEN = token;
          }
       });
       requestToken.execute("https://api.twitter.com/oauth2/token", APP_KEY, APP_SECRET);
->>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
    }
 
    // hide/show saveFloatingActionButton based on EditTexts' contents
@@ -291,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
          public void onClick(View view) {
             String tag = ((TextView) view).getText().toString();
             String urlString;
-<<<<<<< HEAD
             if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
                urlString = getString(R.string.translate_search_URL_prefix) +
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + getString(R.string.translate_search_URL_suffix) + language_chosen;
@@ -301,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
             }
             // get query string and create a URL representing the search
-=======
 
             if (!filter.isEmpty()) {
                urlString = getString(R.string.search_URL) +
@@ -311,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
                urlString = getString(R.string.search_URL) +
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
             }
->>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
 
             // create an Intent to launch a web browser
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
