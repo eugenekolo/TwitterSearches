@@ -24,11 +24,18 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+<<<<<<< HEAD
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+=======
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.ArrayAdapter;
+>>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,9 +53,22 @@ public class MainActivity extends AppCompatActivity {
    private Spinner spinner_language;
    private String language_chosen;
 
+   public static OAuthAppAuthTask requestToken;
+
+   final static String TWITTER_API = "https://api.twitter.com";
+   final static String TWITTER_AUTH = TWITTER_API + "/oauth2/token";
+   final static String TWITTER_WORLDWIDE_TRENDING = TWITTER_API + "1.1/trends/place.json?id=1";
+   final static String APP_KEY = "d6ePwCWAoJEHQgYkj4LfvsaUn";
+   final static String APP_SECRET = "zNr00TsK2V0MLmQkVLBle7UmGH27K2EkIV0YFGg6tkWtKb8lL6";
+   static String APP_TOKEN = null;
+
    public void gotoTrends(View view) {
       startActivity(new Intent(getApplicationContext(), TrendActivity.class));
    }
+
+   private Spinner filterSpinner;
+   private String filterChoice; // string for filter choice
+   private String filter; // string for filter
 
    // configures the GUI and registers event listeners
    @Override
@@ -59,12 +79,60 @@ public class MainActivity extends AppCompatActivity {
       setSupportActionBar(toolbar);
 
       // get references to the EditTexts and add TextWatchers to them
-      queryEditText = ((TextInputLayout) findViewById(
-         R.id.queryTextInputLayout)).getEditText();
+      queryEditText = ((TextInputLayout) findViewById(R.id.queryTextInputLayout)).getEditText();
       queryEditText.addTextChangedListener(textWatcher);
-      tagEditText = ((TextInputLayout) findViewById(
-         R.id.tagTextInputLayout)).getEditText();
+      tagEditText = ((TextInputLayout) findViewById(R.id.tagTextInputLayout)).getEditText();
       tagEditText.addTextChangedListener(textWatcher);
+
+
+      filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
+
+      List<String> filters = new ArrayList<String>();
+      filters.add("None");
+      filters.add("Images");
+      filters.add("Videos");
+      filters.add("Media (Images and Videos)");
+      filters.add("Links");
+
+      // Creating adapter for spinner
+      ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filters);
+
+      // attaching data adapter to spinner
+      filterSpinner.setAdapter(dataAdapter);
+
+      // Spinner click listener
+      filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // On selecting a spinner item
+            filterChoice = parent.getItemAtPosition(position).toString();
+            switch (filterChoice) {
+               case "None":
+                  filter = "";
+                  break;
+               case "Images":
+                  filter = "images";
+                  break;
+               case "Videos":
+                  filter = "videos";
+                  break;
+               case "Media (Images and Videos)":
+                  filter = "media";
+                  break;
+               case "Links":
+                  filter = "links";
+                  break;
+               default:
+                  filter = "";
+                  break;
+            }
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {
+
+         }
+      });
 
       // get the SharedPreferences containing the user's saved searches
       savedSearches = getSharedPreferences(SEARCHES, MODE_PRIVATE);
@@ -74,26 +142,24 @@ public class MainActivity extends AppCompatActivity {
       Collections.sort(tags, String.CASE_INSENSITIVE_ORDER);
 
       // get reference to the RecyclerView to configure it
-      RecyclerView recyclerView =
-         (RecyclerView) findViewById(R.id.recyclerView);
+      RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
       // use a LinearLayoutManager to display items in a vertical list
       recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
       // create RecyclerView.Adapter to bind tags to the RecyclerView
-      adapter = new SearchesAdapter(
-         tags, itemClickListener, itemLongClickListener);
+      adapter = new SearchesAdapter(tags, itemClickListener, itemLongClickListener);
       recyclerView.setAdapter(adapter);
 
       // specify a custom ItemDecorator to draw lines between list items
       recyclerView.addItemDecoration(new ItemDivider(this));
 
       // register listener to save a new or edited search
-      saveFloatingActionButton =
-         (FloatingActionButton) findViewById(R.id.fab);
+      saveFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
       saveFloatingActionButton.setOnClickListener(saveButtonListener);
       updateSaveFAB(); // hides button because EditTexts initially empty
 
+<<<<<<< HEAD
       //create spinner for languages
       language_chosen = "en-us"; //default language is English
       spinner_language = (Spinner) findViewById(R.id.spinner_language); // Spinner element /
@@ -143,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
          }
       });
+=======
+      requestToken = new OAuthAppAuthTask(new OAuthAppAuthTask.ApiResponse() {
+         public void onResponse(String token) {
+            APP_TOKEN = token;
+         }
+      });
+      requestToken.execute("https://api.twitter.com/oauth2/token", APP_KEY, APP_SECRET);
+>>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
    }
 
    // hide/show saveFloatingActionButton based on EditTexts' contents
@@ -184,8 +258,8 @@ public class MainActivity extends AppCompatActivity {
             if (!query.isEmpty() && !tag.isEmpty()) {
                // hide the virtual keyboard
                ((InputMethodManager) getSystemService(
-                  Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                     view.getWindowToken(), 0);
+                       Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
+                       view.getWindowToken(), 0);
 
                addTaggedSearch(tag, query); // add/update the search
                queryEditText.setText(""); // clear queryEditText
@@ -217,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
          public void onClick(View view) {
             String tag = ((TextView) view).getText().toString();
             String urlString;
+<<<<<<< HEAD
             if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
                urlString = getString(R.string.translate_search_URL_prefix) +
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + getString(R.string.translate_search_URL_suffix) + language_chosen;
@@ -226,6 +301,17 @@ public class MainActivity extends AppCompatActivity {
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
             }
             // get query string and create a URL representing the search
+=======
+
+            if (!filter.isEmpty()) {
+               urlString = getString(R.string.search_URL) +
+                       Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
+            }
+            else {
+               urlString = getString(R.string.search_URL) +
+                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+            }
+>>>>>>> f7d87ef20b4f4d9a275e100310230a643573d2dc
 
             // create an Intent to launch a web browser
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
