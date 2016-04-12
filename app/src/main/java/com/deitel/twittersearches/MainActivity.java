@@ -287,18 +287,15 @@ public class MainActivity extends AppCompatActivity {
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + getString(R.string.translate_search_URL_suffix) + language_chosen;
             }
             else { //if language chosen is English, use regular search URL
-               urlString = getString(R.string.search_URL) +
-                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
-            }
-            // get query string and create a URL representing the search
-
-            if (!filter.isEmpty()) {
-               urlString = getString(R.string.search_URL) +
-                       Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
-            }
-            else {
-               urlString = getString(R.string.search_URL) +
-                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+               // get query string and create a URL representing the search
+               if (!filter.isEmpty()) {
+                  urlString = getString(R.string.search_URL) +
+                          Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
+               }
+               else {
+                  urlString = getString(R.string.search_URL) +
+                          Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+               }
             }
 
             // create an Intent to launch a web browser
@@ -339,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                            // set EditTexts to match chosen tag and query
                            tagEditText.setText(tag);
                            queryEditText.setText(
-                              savedSearches.getString(tag, ""));
+                                   savedSearches.getString(tag, ""));
                            break;
                         case 2: // delete
                            deleteSearch(tag);
