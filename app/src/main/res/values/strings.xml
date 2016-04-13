@@ -10,6 +10,10 @@
    <string name="translate_search_URL_prefix">https://www.worldlingo.com/SOww9VFt9gl5kgjyfFVyH1awnYJXpNpkc/translation?wl_url=https%3A%2F%2Fmobile.twitter.com%2Fsearch%3Fq%3D</string>
     <string name="translate_search_URL_suffix">&amp;wl_srclang=EN&amp;wl_trglang=</string>
    <string name="share_edit_delete_title">Translate, Share, Edit or Delete the search tagged as \"%s\"</string>
+
+   <string name="twitter_account">Twitter account to see replies to a specific tweet</string>
+   <string name="post_id">Post ID (leave both blank for example)</string>
+
    <string name="cancel">Cancel</string>
    <string name="share_subject">Twitter search that might interest you</string>
    <string name="share_message">Check out the results of this Twitter search: %s</string>

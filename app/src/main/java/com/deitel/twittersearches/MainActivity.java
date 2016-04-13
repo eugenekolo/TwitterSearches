@@ -1,6 +1,14 @@
 // MainActivity.java
 // Manages your favorite Twitter searches for easy
 // access and display in the device's web browser
+
+
+//Team Flying Cats Twitter Mini-Research Project
+//Arlyn R, Dennis C, Eugene K, Jonathan L.
+
+
+
+
 package com.deitel.twittersearches;
 
 import android.app.AlertDialog;
@@ -58,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
    public void gotoTrends(View view) {
       startActivity(new Intent(getApplicationContext(), TrendActivity.class));
    }
+
+
 
    private Spinner filterSpinner;
    private String filterChoice; // string for filter choice
@@ -156,13 +166,13 @@ public class MainActivity extends AppCompatActivity {
       language_chosen = "en-us"; //default language is English
       spinner_language = (Spinner) findViewById(R.id.spinner_language); // Spinner element /
       final List<String> languages = new ArrayList<String>();  // Spinner Drop down elements
-      languages.add("English");
-      languages.add("Spanish");
-      languages.add("Arabic");
-      languages.add("French");
-      languages.add("Italian");
-      languages.add("Japanese");
-      languages.add("Russian");
+       languages.add("English");
+       languages.add("Arabic");
+       languages.add("French");
+       languages.add("Italian");
+       languages.add("Japanese");
+       languages.add("Russian");
+       languages.add("Spanish");
 
       // Creating adapter for spinner
       ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
@@ -305,6 +315,29 @@ public class MainActivity extends AppCompatActivity {
             startActivity(webIntent); // show results in web browser
          }
       };
+
+
+
+    public void goToReplies(View view) {
+
+        String post_id_edttxt = ((EditText) findViewById(R.id.post_ID_edttxt)).getText().toString();
+        String twitter_account_edttxt = ((EditText) findViewById(R.id.twitter_account_edttxt)).getText().toString();
+
+        String urlString;
+
+        if((post_id_edttxt.equals("") || post_id_edttxt.equals(null)) && (twitter_account_edttxt.equals("") || twitter_account_edttxt.equals(null))){
+            urlString = "https://twitter.com/RedSox/status/719502921092608005";
+        }else{
+            urlString = "https://twitter.com/" + twitter_account_edttxt  + "/status/" + post_id_edttxt;
+
+        }
+
+
+
+        // create an Intent to launch a web browser
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+        startActivity(webIntent); // show results in web browser
+    }
 
    // itemLongClickListener displays a dialog allowing the user to share
    // edit or delete a saved search
