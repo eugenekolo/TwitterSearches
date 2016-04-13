@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatActivity {
             String tag = ((TextView) view).getText().toString();
             String urlString;
             if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
-               urlString = getString(R.string.translate_search_URL_prefix) +
-                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + getString(R.string.translate_search_URL_suffix) + language_chosen;
+               urlString = getString(R.string.translate_search_URL) +
+                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + "&lang=" + language_chosen;
             }
             else { //if language chosen is English, use regular search URL
                // get query string and create a URL representing the search
