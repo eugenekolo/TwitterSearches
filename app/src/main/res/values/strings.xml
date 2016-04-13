@@ -9,6 +9,10 @@
    <string name="fb_search_URL">http://facebook.com/sharer/sharer.php?u=https%3A//mobile.twitter.com/search?q=</string>
    <string name="translate_search_URL">http://twitter.com/search?q=</string>
    <string name="share_edit_delete_title">Translate, Share, Edit or Delete the search tagged as \"%s\"</string>
+
+   <string name="twitter_account">Twitter account to see replies to a specific tweet</string>
+   <string name="post_id">Post ID (leave both blank for example)</string>
+
    <string name="cancel">Cancel</string>
    <string name="share_subject">Twitter search that might interest you</string>
    <string name="share_message">Check out the results of this Twitter search: %s</string>

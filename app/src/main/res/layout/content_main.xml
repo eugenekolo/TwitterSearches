@@ -14,6 +14,53 @@
    tools:showIn="@layout/activity_main"
    tools:context=".MainActivity">
 
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:hint="@string/twitter_account"
+            android:id="@+id/twitter_account_edttxt"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:hint="@string/post_id"
+            android:id="@+id/post_ID_edttxt"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View replies to specific tweet"
+            android:id="@+id/btnFeature2"
+            android:layout_below="@+id/tagTextInputLayout"
+            android:layout_alignParentStart="true"
+            android:onClick="goToReplies"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
    <android.support.design.widget.TextInputLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -44,13 +91,13 @@
    </android.support.design.widget.TextInputLayout>
    <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="0dp"
+       android:layout_height="30dp"
        android:layout_weight="1"
        android:orientation="horizontal">
       <Button
           style="?android:attr/buttonStyleSmall"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_height="50dp"
           android:text="Trending"
           android:id="@+id/btnFeature1"
           android:layout_below="@+id/tagTextInputLayout"
@@ -75,6 +122,10 @@
            android:id="@+id/filterSpinner" />
 
    </LinearLayout>
+
+
+
+
 
     <LinearLayout
       android:orientation="vertical"
