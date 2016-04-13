@@ -52,7 +52,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="View replies to specific tweet"
             android:id="@+id/btnFeature2"
             android:layout_below="@+id/tagTextInputLayout"
             android:layout_alignParentStart="true"
