@@ -38,6 +38,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -295,6 +297,12 @@ public class MainActivity extends AppCompatActivity {
             if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
                urlString = getString(R.string.translate_search_URL) +
                        Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + "&lang=" + language_chosen;
+
+               Intent i = new Intent(getApplicationContext(), TranslationActivity.class);
+               i.putExtra("lang", language_chosen);
+               i.putExtra("query", savedSearches.getString(tag, ""));
+               startActivity(i);
+               return;
             }
             else { //if language chosen is English, use regular search URL
                // get query string and create a URL representing the search
