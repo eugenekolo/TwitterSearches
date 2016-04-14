@@ -25,4 +25,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.google.apis:google-api-services-translate:v2-rev44-1.21.0'
+    compile 'org.bouncycastle:bcprov-jdk16:1.45'
+    compile ('com.google.api-client:google-api-client-android:1.17.0-rc') {
+        exclude module: 'httpclient'
+    }
 }

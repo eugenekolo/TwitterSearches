@@ -36,10 +36,10 @@ public  class ApiRequestTask extends AsyncTask<String, Void, String> {
 
         try {
             // Form the HTTP request
-            URL _url = new URL((String)params[0]);
+            URL _url = new URL(params[0]);
             httpConnection = (HttpURLConnection) _url.openConnection();
-            httpConnection.setRequestMethod((String) params[1]);
-            httpConnection.setRequestProperty("Authorization", "Bearer " + (String)params[2]);
+            httpConnection.setRequestMethod(params[1]);
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[2]);
             httpConnection.setRequestProperty("Content-Type", "application/json");
             httpConnection.connect();
 

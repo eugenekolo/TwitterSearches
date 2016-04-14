@@ -5,5 +5,4 @@
           android:id="@+id/textView"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:gravity="center_vertical">
-
 </TextView>

@@ -22,6 +22,6 @@
 
    </android.support.design.widget.AppBarLayout>
 
-   <include layout="@layout/content_trend"/>
+   <include layout="@layout/content_translation"/>
 
 </android.support.design.widget.CoordinatorLayout>

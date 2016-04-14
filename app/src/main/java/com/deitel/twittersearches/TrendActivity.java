@@ -3,6 +3,7 @@ package com.deitel.twittersearches;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,7 @@ public class TrendActivity extends AppCompatActivity {
                trendsJson = new JSONArray(response);
                JSONArray tmp = trendsJson.getJSONObject(0).getJSONArray("trends");
                trends.clear();
+
                for (int i = 0; i < DISPLAY_AMNT; i++) {
                   String name = tmp.getJSONObject(i).getString("name");
                   String url = tmp.getJSONObject(i).getString("url");

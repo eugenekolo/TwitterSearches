@@ -30,7 +30,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -42,11 +42,12 @@
             android:id="@+id/post_ID_edttxt"
             android:singleLine="true"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -56,9 +57,21 @@
             android:id="@+id/btnFeature2"
             android:layout_below="@+id/tagTextInputLayout"
             android:layout_alignParentStart="true"
-            android:onClick="goToReplies"/>
+            android:onClick="goToReplies"
+            android:layout_weight="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trending"
+            android:id="@+id/btnFeature1"
+            android:layout_below="@+id/tagTextInputLayout"
+            android:layout_alignParentStart="true"
+            android:onClick="gotoTrends"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 
    <android.support.design.widget.TextInputLayout
@@ -94,38 +107,22 @@
        android:layout_height="30dp"
        android:layout_weight="1"
        android:orientation="horizontal">
-      <Button
-          style="?android:attr/buttonStyleSmall"
-          android:layout_width="wrap_content"
-          android:layout_height="50dp"
-          android:text="Trending"
-          android:id="@+id/btnFeature1"
-          android:layout_below="@+id/tagTextInputLayout"
-          android:layout_alignParentStart="true"
-          android:onClick="gotoTrends"/>
-      <Spinner
+
+       <Spinner
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/spinner_language"
-          android:spinnerMode="dropdown">
+          android:spinnerMode="dropdown"
+          android:layout_weight="1">
       </Spinner>
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:textAppearance="?android:attr/textAppearanceSmall"
-           android:text="Filter Options"
-           android:id="@+id/filterTextView" />
 
        <Spinner
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:id="@+id/filterSpinner" />
+           android:id="@+id/filterSpinner"
+           android:layout_weight="1"/>
 
    </LinearLayout>
-
-
-
-
 
     <LinearLayout
       android:orientation="vertical"

@@ -2,12 +2,8 @@
 // Manages your favorite Twitter searches for easy
 // access and display in the device's web browser
 
-
 //Team Flying Cats Twitter Mini-Research Project
 //Arlyn R, Dennis C, Eugene K, Jonathan L.
-
-
-
 
 package com.deitel.twittersearches;
 
@@ -26,7 +22,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -37,8 +32,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
    public static OAuthAppAuthTask requestToken;
 
-   final static String TWITTER_API = "https://api.twitter.com";
-   final static String TWITTER_AUTH = TWITTER_API + "/oauth2/token";
-   final static String TWITTER_WORLDWIDE_TRENDING = TWITTER_API + "1.1/trends/place.json?id=1";
    final static String APP_KEY = "d6ePwCWAoJEHQgYkj4LfvsaUn";
    final static String APP_SECRET = "zNr00TsK2V0MLmQkVLBle7UmGH27K2EkIV0YFGg6tkWtKb8lL6";
    static String APP_TOKEN = null;
@@ -135,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
          @Override
          public void onNothingSelected(AdapterView<?> parent) {
-
          }
       });
 
@@ -185,8 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
       spinner_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
          @Override
-         public void onItemSelected(AdapterView<?> parent, View view,
-                                    int position, long id) {
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String item = parent.getItemAtPosition(position).toString();
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             if (item.equals("English")) { //language chosen
@@ -225,13 +213,11 @@ public class MainActivity extends AppCompatActivity {
    // hide/show saveFloatingActionButton based on EditTexts' contents
    private final TextWatcher textWatcher = new TextWatcher() {
       @Override
-      public void beforeTextChanged(CharSequence s, int start, int count,
-         int after) { }
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
       // hide/show the saveFloatingActionButton after user changes input
       @Override
-      public void onTextChanged(CharSequence s, int start, int before,
-         int count) {
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
          updateSaveFAB();
       }
 
@@ -295,9 +281,6 @@ public class MainActivity extends AppCompatActivity {
             String tag = ((TextView) view).getText().toString();
             String urlString;
             if (!language_chosen.equals("EN")) { //if language chosen is anything but English, user translation URL
-               urlString = getString(R.string.translate_search_URL) +
-                       Uri.encode(savedSearches.getString(tag, ""), "UTF-8") + "&lang=" + language_chosen;
-
                Intent i = new Intent(getApplicationContext(), TranslationActivity.class);
                i.putExtra("lang", language_chosen);
                i.putExtra("query", savedSearches.getString(tag, ""));
@@ -307,19 +290,15 @@ public class MainActivity extends AppCompatActivity {
             else { //if language chosen is English, use regular search URL
                // get query string and create a URL representing the search
                if (!filter.isEmpty()) {
-                  urlString = getString(R.string.search_URL) +
-                          Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
+                  urlString = getString(R.string.search_URL) + Uri.encode(savedSearches.getString(tag, "") + " filter:" + filter, "UTF-8");
                }
                else {
-                  urlString = getString(R.string.search_URL) +
-                          Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+                  urlString = getString(R.string.search_URL) + Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
                }
             }
 
             // create an Intent to launch a web browser
-            Intent webIntent = new Intent(Intent.ACTION_VIEW,
-               Uri.parse(urlString));
-
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
             startActivity(webIntent); // show results in web browser
          }
       };
@@ -335,12 +314,9 @@ public class MainActivity extends AppCompatActivity {
 
         if((post_id_edttxt.equals("") || post_id_edttxt.equals(null)) && (twitter_account_edttxt.equals("") || twitter_account_edttxt.equals(null))){
             urlString = "https://twitter.com/RedSox/status/719502921092608005";
-        }else{
+        } else {
             urlString = "https://twitter.com/" + twitter_account_edttxt  + "/status/" + post_id_edttxt;
-
         }
-
-
 
         // create an Intent to launch a web browser
         Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
@@ -357,12 +333,10 @@ public class MainActivity extends AppCompatActivity {
             final String tag = ((TextView) view).getText().toString();
 
             // create a new AlertDialog
-            AlertDialog.Builder builder =
-               new AlertDialog.Builder(MainActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
             // set the AlertDialog's title
-            builder.setTitle(
-               getString(R.string.share_edit_delete_title, tag));
+            builder.setTitle(getString(R.string.share_edit_delete_title, tag));
 
             // set list of items to display and create event handler
             builder.setItems(R.array.dialog_items,
@@ -376,8 +350,7 @@ public class MainActivity extends AppCompatActivity {
                         case 1: // edit
                            // set EditTexts to match chosen tag and query
                            tagEditText.setText(tag);
-                           queryEditText.setText(
-                                   savedSearches.getString(tag, ""));
+                           queryEditText.setText(savedSearches.getString(tag, ""));
                            break;
                         case 2: // delete
                            deleteSearch(tag);
@@ -401,27 +374,22 @@ public class MainActivity extends AppCompatActivity {
    // allow user to choose an app for sharing URL of a saved search
    private void shareSearch(String tag) {
       // create the URL representing the search
-      String urlString = getString(R.string.search_URL) +
-         Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+      String urlString = getString(R.string.search_URL) + Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
 
       // create Intent to share urlString
       Intent shareIntent = new Intent();
       shareIntent.setAction(Intent.ACTION_SEND);
-      shareIntent.putExtra(Intent.EXTRA_SUBJECT,
-         getString(R.string.share_subject));
-      shareIntent.putExtra(Intent.EXTRA_TEXT,
-         getString(R.string.share_message, urlString));
+      shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+      shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, urlString));
       shareIntent.setType("text/plain");
 
       // display apps that can share plain text
-      startActivity(Intent.createChooser(shareIntent,
-         getString(R.string.share_search)));
+      startActivity(Intent.createChooser(shareIntent, getString(R.string.share_search)));
    }
    // allow user to choose directly share URL of a saved search on Facebook
    private void shareSearchFB(String tag) {
       // create the URL representing the search
-      String urlString = getString(R.string.fb_search_URL) +
-              Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
+      String urlString = getString(R.string.fb_search_URL) + Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
 
       // create Intent to share urlString
       Intent shareIntent = new Intent();
@@ -440,8 +408,6 @@ public class MainActivity extends AppCompatActivity {
       startActivity(webIntent); // show results in web browser
    }
 
-
-
    // deletes a search after the user confirms the delete operation
    private void deleteSearch(final String tag) {
       // create a new AlertDialog and set its message
@@ -455,11 +421,9 @@ public class MainActivity extends AppCompatActivity {
       confirmBuilder.setPositiveButton(getString(R.string.delete),
          new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-               tags.remove(tag); // remove tag from tags
-
+               tags.remove(tag);
                // get SharedPreferences.Editor to remove saved search
-               SharedPreferences.Editor preferencesEditor =
-                  savedSearches.edit();
+               SharedPreferences.Editor preferencesEditor = savedSearches.edit();
                preferencesEditor.remove(tag); // remove search
                preferencesEditor.apply(); // save the changes
 
@@ -468,24 +432,6 @@ public class MainActivity extends AppCompatActivity {
             }
          }
       );
-
       confirmBuilder.create().show(); // display AlertDialog
    }
-
-
 }
-
-/**************************************************************************
- * (C) Copyright 1992-2016 by Deitel & Associates, Inc. and               *
- * Pearson Education, Inc. All Rights Reserved.                           *
- *                                                                        *
- * DISCLAIMER: The authors and publisher of this book have used their     *
- * best efforts in preparing the book. These efforts include the          *
- * development, research, and testing of the theories and programs        *
- * to determine their effectiveness. The authors and publisher make       *
- * no warranty of any kind, expressed or implied, with regard to these    *
- * programs or to the documentation contained in these books. The authors *
- * and publisher shall not be liable in any event for incidental or       *
- * consequential damages in connection with, or arising out of, the       *
- * furnishing, performance, or use of these programs.                     *
- **************************************************************************/

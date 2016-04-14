@@ -11,7 +11,7 @@
    android:paddingBottom="@dimen/activity_vertical_margin"
    app:layout_behavior="@string/appbar_scrolling_view_behavior"
    tools:showIn="@layout/activity_translate"
-   tools:context=".TrendActivity">
+   tools:context=".TranslationActivity">
 
    <LinearLayout
       android:orientation="vertical"
@@ -24,7 +24,7 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:textAppearance="?android:attr/textAppearanceMedium"
-         android:text="@string/trending"
+         android:text="Translated tweets"
          android:id="@+id/textView"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/activity_vertical_margin"
